@@ -31,3 +31,5 @@ Constraints:
 
  
 Follow-up: Could you solve the problem in linear time and in `O(1)` space?
+
+ayta valo moto check korbo..
