@@ -55,5 +55,5 @@ function fullJustify(words: string[], maxWidth: number): string[] {
         }
     }
 
-    return result;   // সব formatted line-এর array
+    return result;   
 };
