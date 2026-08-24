@@ -1,16 +1,19 @@
-function removeDuplicates(nums: number[]): number {
-    const n: number = nums.length;
-    if (n <= 2) return n;   // 2 বা তার কম element হলে duplicate limit (2) violate হওয়ার সুযোগই নাই
+function lengthOfLongestSubstring(s: string): number {
+    const lastSeen: Map<string, number> = new Map();   // character -> তার সর্বশেষ দেখা index
+    let left: number = 0;                                 // window-এর বাম সীমানা
+    let maxLength: number = 0;                             // এখন পর্যন্ত সবচেয়ে বড় unique substring-এর length
 
-    let k: number = 2;   // প্রথম দুইটা element সবসময়ই রাখা যায় (তুলনা করার জন্য k-2 লাগবে বলে বেস কেস হিসেবে ধরে নিলাম)
+    for (let right: number = 0; right < s.length; right++) {   // right pointer দিয়ে string scan করছি
+        const char: string = s[right];
 
-    for (let i: number = 2; i < n; i++) {         // index 2 থেকে scan শুরু, কারণ 0,1 আগে থেকেই "রাখা" ধরে নিলাম
-        if (nums[i] !== nums[k - 2]) {            // current element কি "রাখা অংশের" দুই ধাপ আগের element থেকে ভিন্ন?
-            nums[k] = nums[i];                    // হ্যাঁ হলে, এটা এখনো ২ বার হয়নি — রাখা যায়
-            k++;                                   // পরের slot এর জন্য k বাড়াও
+        if (lastSeen.has(char) && lastSeen.get(char)! >= left) {   // যদি এই character আগে দেখা গেছে, এবং সেটা current window-এর ভিতরেই...
+            left = lastSeen.get(char)! + 1;                           // ...তাহলে left-কে সেই duplicate-এর ঠিক পরের position-এ নিয়ে যাই
         }
-        // else: এই value ইতিমধ্যে ২ বার রাখা হয়ে গেছে, এইটা ৩য়/৪র্থ বার — skip
+
+        lastSeen.set(char, right);                                 // এই character-এর সর্বশেষ position আপডেট করলাম
+
+        maxLength = Math.max(maxLength, right - left + 1);         // বর্তমান window-এর length দিয়ে maxLength আপডেট
     }
 
-    return k;   // k = final valid length
+    return maxLength;   // সবচেয়ে বড় unique-character substring-এর length
 };
